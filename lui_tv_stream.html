@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
+<title>LUI TV STREAM</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080b14;color:#fff;font-family:Arial,Helvetica,sans-serif}
+button,input{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:225px;background:#0b1020;padding:25px 16px;display:flex;flex-direction:column;border-right:1px solid #ffffff12;flex-shrink:0}
+.brand{font-size:20px;font-weight:bold;letter-spacing:2px;display:flex;align-items:center;gap:12px;margin-bottom:45px}
+.logo{background:linear-gradient(135deg,#657cff,#a16cff);padding:9px 13px;border-radius:12px;font-size:25px}
+.brand b{color:#8295ff}
+nav{display:grid;gap:9px}
+.nav-item{display:flex;align-items:center;gap:13px;border:0;background:transparent;color:#9ca8c4;padding:14px;border-radius:12px;text-align:left}
+.nav-item:hover,.nav-item.active{background:#29375e;color:white}
+.profile{margin-top:auto;color:#aab4cb;padding:14px}
+.main{flex:1;min-width:0;padding:26px 35px}
+.topbar,.heading,.actions,.section-heading{display:flex;align-items:center;justify-content:space-between}
+.heading{gap:12px}.topbar h2{margin:5px 0;font-size:22px;letter-spacing:2px}
+.eyebrow{font-size:10px;color:#91a1d7;letter-spacing:2px}
+.actions{gap:15px}.actions button{color:white;background:transparent;border:0}
+.search{display:flex;align-items:center;gap:8px;background:#ffffff10;padding:10px 14px;border-radius:20px}
+.search input{width:120px;background:transparent;color:white;border:0;outline:0}
+.avatar{background:#394b80;border-radius:50%;padding:11px 14px}
+.hero{margin-top:28px;height:390px;border-radius:22px;background-size:cover;background-position:center;overflow:hidden}
+.hero-overlay{height:100%;padding:45px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;background:linear-gradient(90deg,#050812 0%,#050812bb 48%,transparent)}
+.hero-label{background:#657cff50;color:#dce2ff;padding:8px 15px;border-radius:20px;font-size:12px}
+.hero h1{font-size:clamp(32px,5vw,58px);margin:18px 0 5px}
+.hero p{color:#c2c9da}
+.hero-buttons{display:flex;gap:12px;margin-top:16px}
+.primary,.secondary{padding:13px 20px;border-radius:10px;font-weight:bold}
+.primary{background:#657cff;color:white;border:0}
+.secondary{background:#ffffff15;color:white;border:1px solid #ffffff40}
+.dots{display:flex;gap:8px;margin-top:25px}
+.dot{width:9px;height:9px;border:0;border-radius:20px;background:#ffffff70;padding:0}
+.dot.active{width:27px;background:#8295ff}
+.section{margin-top:34px}.section h2{font-size:21px;margin:7px 0}
+.categories{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.category{color:#b9c1d5;background:#ffffff09;border:1px solid #ffffff20;border-radius:25px;padding:11px 18px}
+.category.active{background:#5268d8;color:white}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px;margin-top:20px}
+.card{height:190px;position:relative;overflow:hidden;border-radius:15px;background:#171e32;transition:.2s}
+.card:hover{transform:translateY(-5px)}
+.card img{width:100%;height:100%;object-fit:cover;opacity:.75}
+.card-info{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,#080b14)}
+.card-info span{font-size:11px;color:#aab8ff}.card-info h3{font-size:15px;margin:5px 0}
+.empty{color:#9da8c0;padding:25px}
+footer{color:#68738d;font-size:12px;padding:35px 0}
+.menu-button{display:none}
+@media(max-width:900px){
+ .sidebar{width:75px;padding:20px 8px}.brand{justify-content:center}
+ .brand-name,.nav-text,.profile span{display:none}
+ .nav-item{justify-content:center}.main{padding:20px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .sidebar{position:fixed;z-index:5;left:-240px;top:0;bottom:0;width:225px;transition:.2s}
+ .sidebar.open{left:0}.brand{justify-content:flex-start}
+ .brand-name,.nav-text,.profile span{display:inline}
+ .nav-item{justify-content:flex-start}.menu-button{display:block}
+ .main{padding:17px}.topbar h2{font-size:16px}
+ .search input{width:75px}.hero{height:320px}
+ .hero-overlay{padding:22px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .card{height:145px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand"><span class="logo">L</span><span class="brand-name">LUI <b>STREAM</b></span></div>
+ <nav id="navigation">
+  <button class="nav-item active" data-category="Home">⌂ <span class="nav-text">Home</span></button>
+  <button class="nav-item" data-category="Movies">▣ <span class="nav-text">Movies</span></button>
+  <button class="nav-item" data-category="Series">▤ <span class="nav-text">Series</span></button>
+  <button class="nav-item" data-category="Anime">▶ <span class="nav-text">Anime</span></button>
+  <button class="nav-item" data-category="Live TV">▣ <span class="nav-text">Live TV</span></button>
+  <button class="nav-item" data-category="My List">＋ <span class="nav-text">My List</span></button>
+  <button class="nav-item" data-category="LUI Cloud">☁ <span class="nav-text">LUI Cloud</span></button>
+  <button class="nav-item" data-category="Settings">⚙ <span class="nav-text">Settings</span></button>
+ </nav>
+ <div class="profile">● <span>Guest Account</span></div>
+</aside>
+<main class="main">
+<header class="topbar">
+ <div class="heading">
+  <button class="menu-button secondary" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
+  <div><span class="eyebrow">WELCOME TO</span><h2>LUI TV STREAM</h2></div>
+ </div>
+ <div class="actions">
+  <div class="search"><span>⌕</span><input id="search" placeholder="Search..." aria-label="Search collections"></div>
+  <button aria-label="Notifications">♧</button><div class="avatar">G</div>
+ </div>
+</header>
+<section class="hero" id="hero">
+ <div class="hero-overlay">
+  <span class="hero-label" id="heroCategory">FEATURED</span>
+  <h1 id="heroTitle">LUI ORIGINALS</h1>
+  <p id="heroSubtitle">Your entertainment universe</p>
+  <div class="hero-buttons">
+   <button class="primary" onclick="selectCategory('Movies')">▶ Explore</button>
+   <button class="secondary" onclick="selectCategory('My List')">＋ My List</button>
+  </div>
+  <div class="dots" id="dots"></div>
+ </div>
+</section>
+<section class="section">
+ <div class="section-heading"><h2>Explore Categories</h2><span>›</span></div>
+ <div class="categories" id="categories"></div>
+</section>
+<section class="section">
+ <div class="section-heading">
+  <div><span class="eyebrow">DISCOVER SOMETHING NEW</span><h2 id="collectionTitle">Featured Collections</h2></div>
+  <span class="eyebrow">LUI COLLECTIONS</span>
+ </div>
+ <div class="grid" id="contentGrid"></div>
+</section>
+<footer>LUI TV STREAM • YOUR ENTERTAINMENT UNIVERSE</footer>
+</main>
+</div>
+<script>
+const categories=["Home","Movies","Series","Anime","Live TV","My List"];
+const slides=[
+ {title:"LUI ORIGINALS",subtitle:"Your entertainment universe",category:"FEATURED",image:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1400"},
+ {title:"ANIME UNIVERSE",subtitle:"Explore your anime collection",category:"ANIME",image:"https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1400"},
+ {title:"CINEMA COLLECTION",subtitle:"Discover your next movie",category:"MOVIES",image:"https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1400"}
+];
+const cards=[
+ {title:"Featured Collection",type:"Movies",image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600"},
+ {title:"Anime Collection",type:"Anime",image:"https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600"},
+ {title:"Series Collection",type:"Series",image:"https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=600"},
+ {title:"Documentaries",type:"Movies",image:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600"},
+ {title:"Cinema Highlights",type:"Movies",image:"https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=600"},
+ {title:"Anime World",type:"Anime",image:"https://images.unsplash.com/photo-1541562232579-512a21360020?w=600"}
+];
+let activeCategory="Home";
+function showSlide(index){
+ const slide=slides[index];
+ document.getElementById("hero").style.backgroundImage=`url("${slide.image}")`;
+ document.getElementById("heroTitle").textContent=slide.title;
+ document.getElementById("heroSubtitle").textContent=slide.subtitle;
+ document.getElementById("heroCategory").textContent=slide.category;
+ document.getElementById("dots").innerHTML=slides.map((s,i)=>
+  `<button class="dot ${i===index?"active":""}" aria-label="Slide ${i+1}" onclick="showSlide(${i})"></button>`
+ ).join("");
+}
+function renderCategories(){
+ document.getElementById("categories").innerHTML=categories.map(c=>
+  `<button class="category ${activeCategory===c?"active":""}" onclick="selectCategory('${c}')">${c}</button>`
+ ).join("");
+}
+function renderCards(){
+ const query=document.getElementById("search").value.toLowerCase();
+ const filtered=cards.filter(card=>{
+  const categoryMatch=activeCategory==="Home"||activeCategory==="My List"||card.type===activeCategory;
+  return categoryMatch&&(card.title.toLowerCase().includes(query)||card.type.toLowerCase().includes(query));
+ });
+ document.getElementById("contentGrid").innerHTML=filtered.length?filtered.map(card=>
+  `<article class="card" tabindex="0"><img src="${card.image}" alt=""><div class="card-info"><span>${card.type}</span><h3>${card.title}</h3></div></article>`
+ ).join(""):'<p class="empty">No matching collections found.</p>';
+}
+function selectCategory(category){
+ activeCategory=category;
+ renderCategories();renderCards();
+ document.querySelectorAll(".nav-item").forEach(button=>button.classList.toggle("active",button.dataset.category===category));
+ document.getElementById("collectionTitle").textContent=category==="Home"?"Featured Collections":category;
+ document.getElementById("sidebar").classList.remove("open");
+}
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
+document.querySelectorAll(".nav-item").forEach(button=>button.addEventListener("click",()=>selectCategory(button.dataset.category)));
+document.getElementById("search").addEventListener("input",renderCards);
+showSlide(0);renderCategories();renderCards();
+</script>
+</body>
+</html>
